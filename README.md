@@ -1,1 +1,3 @@
-# algebra_refresher git init git add README.md git commit -m first commit git remote add origin https://github.com/cimentadaj/algebra_refresher.git git push -u origin master
+# Algebra refresher
+
+This is my attempt to complete the algebra refresher course from Udacity
