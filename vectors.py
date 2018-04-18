@@ -93,6 +93,34 @@ class Vector(object):
 
     def is_orthogonal(self, other):
         return round(self.dot_product(other), 3) == 0
+    
+    def project(self, other):
+        """
+        Normalization of b
+        """
+        b_normalized = other.normalize()
+        return (b_normalized.times_scalar(self.dot_product(b_normalized)))
+    
+    def orth_to_base(self, other):
+        projected = self.project(other)
+        return(self.minus(projected))
+        
+    def cross_prod(self, other):
+        v = self.coordinates
+        w = other.coordinates
+        x = (v[1] * w[2]) - (w[1] * v[2])
+        y = -((v[0] * w[2]) - (w[0] * v[2]))
+        z = (v[0] * w[1]) - (w[0] * v[1])
+        cross_p = [x, y, z]
+        return(Vector([round(x, 3) for x in cross_p]))
+    
+    def area_parallelogram(self, other):
+        cross_prod = self.cross_prod(other)
+        return(cross_prod.magnitude())
+        
+    def area_triangle(self, other):
+        cross_prod = self.cross_prod(other)
+        return(cross_prod.magnitude() / 2)
 
 if __name__ == '__main__':
     v = Vector([8.218, -9.341])
@@ -179,3 +207,42 @@ if __name__ == '__main__':
     is_orthogonal = v.is_orthogonal(w)
 
     print('4 parallel: {}, orthogonal: {}'.format(is_parallel, is_orthogonal))
+    
+    v = Vector([3.039, 1.879])
+    w = Vector([0.825, 2.036])
+    projw_v = v.project(w)
+    
+    print('Project of w onto v is {}'.format(projw_v))
+    
+    v = Vector([-9.88, -3.264, -8.159])
+    w = Vector([-2.155, -9.353, -9.473])
+    orth_base = v.orth_to_base(w)
+    
+    print('Orthogonal to base is {}'.format(orth_base))
+
+    v = Vector([3.009, -6.172, 3.692, -2.51])
+    w = Vector([6.404, -9.144, 2.759, 8.718])
+    get_parallel = v.project(w) 
+    get_orthogonal = v.orth_to_base(w)
+
+    print("Parallel vector to v is {}".format(get_parallel))
+    print("Orthogonal vector to v is {}".format(get_orthogonal))
+    
+    
+    v1 = Vector([8.462, 7.893, -8.187])
+    w1 = Vector([6.984, -5.975, 4.778])
+
+    v2 = Vector([-8.987, -9.838, 5.031])
+    w2 = Vector([-4.268, -1.861, -8.866])
+
+    v3 = Vector([1.5, 9.547, 3.691])
+    w3 = Vector([-6.007, 0.124, 5.772])
+    
+    cp = v1.cross_prod(w1)
+    print("Cross product of v1 and w1 is {}".format(cp))
+
+    areap = v2.area_parallelogram(w2)
+    print("The area of the parallelogram of v2 and w2 is {}".format(areap))
+
+    areat = v3.area_triangle(w3)
+    print("The area of the parallelogram of v3 and w3 is {}".format(areat))
